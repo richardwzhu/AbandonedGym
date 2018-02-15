@@ -6,7 +6,6 @@ public class RunGame {
 		
 		World game = new World();		
 		game.play();
-
 		
 	}	
 }

@@ -1,5 +1,5 @@
 package interfaces;
-import items.*;
+import items.Item;
 
 public interface Container {
 
