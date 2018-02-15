@@ -8,3 +8,8 @@
 /CommandExamine.class
 /CommandOpen.class
 /CommandClose.class
+/CommandRestart.class
+/CommandQuit.class
+/CommandInventory.class
+/CommandLook.class
+/CommandWait.class

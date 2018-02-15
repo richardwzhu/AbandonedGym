@@ -7,7 +7,7 @@ public class CommandExamine extends Command {
 
 	@Override
 	public String[] getCommandWords() {
-		return new String[]{"examine", "x"};
+		return new String[]{"examine", "x", "inspect"};
 	}
 
 	@Override
