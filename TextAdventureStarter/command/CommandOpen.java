@@ -26,6 +26,7 @@ public class CommandOpen extends Command {
 				if (item instanceof Openable) {
 					Openable obj = (Openable)item; // Casting is safe because we already checked that it's Openable
 					obj.doOpen();
+					World.print("Opened.\n\n");
 				}
 				else {
 					World.print("You can't open that!\n\n");
