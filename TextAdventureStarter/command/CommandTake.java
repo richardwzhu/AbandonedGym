@@ -14,7 +14,6 @@ public class CommandTake extends Command {
 	@Override
 	public void doCommand(String cmd, String[] params, World world) {
 		if (params.length == 1) {
-			System.out.println("Section 1");
 			String secondWord = params[0];
 			if (world.getPlayer().getCurrentRoom().hasItem(secondWord)) {
 				Item item = world.getPlayer().getCurrentRoom().getItem(secondWord);
@@ -26,7 +25,6 @@ public class CommandTake extends Command {
 				World.print("You can't see any " + secondWord + " here.\n\n");
 		}
 		else if (params.length == 3) {
-			System.out.println("Section 2");
 			String item = params[0];
 			String preposition = params[1];
 			String container = params[2];
