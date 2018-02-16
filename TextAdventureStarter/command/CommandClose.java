@@ -26,7 +26,6 @@ public class CommandClose extends Command {
 				if (item instanceof Openable) {
 					Openable obj = (Openable)item; // Casting is safe because we already checked that it's Openable
 					obj.doClose();
-					World.print("Closed.\n\n");
 				}
 				else {
 					World.print("You can't close that!\n\n");

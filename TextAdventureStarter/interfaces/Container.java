@@ -12,6 +12,9 @@ public interface Container {
     /** Removes and return an Item from this Container. */
     public Item removeItem(Item item);
 
+    /** Moves an Item from the specified Container to this Container. */
+    public Item doTake(Item item, Container container);
+
     /** Returns an Item held by this Container or null if not found. */
     public Item getItem(String itemName);
 

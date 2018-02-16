@@ -79,9 +79,9 @@ public abstract class Item {
 
 	public void doTake() {
 		if (isTakeable) {
-			World.print("Taken.\n\n");
 			getWorld().getPlayer().addItem(this);
 			getWorld().getPlayer().getCurrentRoom().removeItem(this);
+			World.print("Taken.\n\n");
 		}
 		else {
 			World.print("You can't take that.\n\n");
@@ -89,9 +89,9 @@ public abstract class Item {
 	}
 
 	public void doDrop() {
-		World.print("Dropped.\n\n");
 		getWorld().getPlayer().removeItem(this);
 		getWorld().getPlayer().getCurrentRoom().addItem(this);		
+		World.print("Dropped.\n\n");
 	}
 
 	public void doExamine() {
