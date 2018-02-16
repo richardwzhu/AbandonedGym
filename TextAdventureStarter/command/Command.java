@@ -51,7 +51,8 @@ public abstract class Command {
 					String sep = File.separator;
 					if (sep.equals("\\")) sep += "\\";
 					String path = file.getPath();
-					String fullClassName = path.substring(2, path.length() - 6).replaceAll(sep, ".");
+					String fullClassName = path.substring(2, path.length() - 6).replaceAll(sep, ".").replaceAll("/", ".");
+					if (fullClassName.startsWith("bin")) fullClassName = fullClassName.substring(4);
 					classes.add(Class.forName(fullClassName));
 				} 
 	    	}
