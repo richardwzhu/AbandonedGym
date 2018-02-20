@@ -19,5 +19,4 @@ public class CommandRestart extends Command {
 	public String getHelpDescription() {
 		return "";
 	}
-
 }

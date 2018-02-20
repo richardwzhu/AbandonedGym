@@ -1,6 +1,6 @@
 package command;
 
-import interfaces.Openable;
+import interfaces.Closeable;
 import items.Item;
 import textadventure.World;
 
@@ -23,8 +23,8 @@ public class CommandClose extends Command {
 			if (playerHasItem || roomHasItem) {
 				// We know the player or room has the item so grab it from whichever has the item
 				Item item = playerHasItem ? world.getPlayer().getItem(secondWord) : world.getPlayer().getCurrentRoom().getItem(secondWord);
-				if (item instanceof Openable) {
-					Openable obj = (Openable)item; // Casting is safe because we already checked that it's Openable
+				if (item instanceof Closeable) {
+					Closeable obj = (Closeable)item; // Casting is safe because we already checked that it's Openable
 					obj.doClose();
 				}
 				else {
@@ -42,5 +42,4 @@ public class CommandClose extends Command {
 	public String getHelpDescription() {
 		return "[item]";
 	}
-
 }

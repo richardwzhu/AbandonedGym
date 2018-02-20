@@ -11,7 +11,7 @@ public class CommandLook extends Command {
 
 	@Override
 	public void doCommand(String cmd, String[] params, World world) {
-		World.print("\n" + world.getPlayer().getCurrentRoom().longDescription());
+		World.print("\n" + world.getPlayer().getCurrentRoom().getDescription());
 	}	
 
 	@Override

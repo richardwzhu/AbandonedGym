@@ -29,7 +29,7 @@ public class CommandGo extends Command {
 				World.print("Sorry.  It's locked.\n\n");
 			else {
 				player.setCurrentRoom(nextRoom);
-				World.print("\n" + player.getCurrentRoom().longDescription());
+				World.print("\n" + player.getCurrentRoom().getDescription());
 			}
 		}
 	}	

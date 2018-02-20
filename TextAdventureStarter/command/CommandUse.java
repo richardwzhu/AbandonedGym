@@ -38,5 +38,4 @@ public class CommandUse extends Command {
 	public String getHelpDescription() {
 		return "[item]";
 	}
-
 }

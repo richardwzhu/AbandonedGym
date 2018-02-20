@@ -18,5 +18,4 @@ public class CommandWait extends Command {
 	public String getHelpDescription() {
 		return "";
 	}
-
 }

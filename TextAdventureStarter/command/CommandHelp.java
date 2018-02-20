@@ -33,5 +33,4 @@ public class CommandHelp extends Command {
 	public String getHelpDescription() {
 		return "[command (optional)]";
 	}
-
 }

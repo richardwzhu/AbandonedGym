@@ -1,7 +1,6 @@
 package items;
 
-import interfaces.Container;
-import textadventure.*;
+import textadventure.World;
 
 /**
  *  Abstract class to handle everything an Item can do.
@@ -78,10 +77,6 @@ public abstract class Item {
 
 	/* Process common commands */
 
-	/**
-	 * If this Item is takeable, this method removes the item from the given container
-	 * (whether a room or other container) and adds the item to the player's inventory.
-	 */
 	public void doTake(Container container) {
 		if (isTakeable) {
 			getWorld().getPlayer().addItem(this);
