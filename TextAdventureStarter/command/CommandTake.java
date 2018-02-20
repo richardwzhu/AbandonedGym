@@ -30,17 +30,7 @@ public class CommandTake extends Command {
 
 	@Override
 	public String getHelpDescription() {
-		String descrip = "[item]";
-		String[] words = getCommandWords();
-		if (words == null || words.length == 0) return "";
-		if (words.length > 1) descrip += " (also: ";
-		for (int i = 1; i < words.length; i++) {
-			descrip += words[i];
-			if (i < words.length - 1) descrip += ", ";
-		}
-		if (words.length > 1) descrip += ")";
-		descrip += "\n" + words[0] + "[Item] from [container]";
-		return descrip;
+		return "[item]";
 	}
 
 }
