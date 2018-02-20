@@ -1,5 +1,6 @@
 package items;
 
+import interfaces.Container;
 import textadventure.*;
 
 /**
@@ -77,10 +78,14 @@ public abstract class Item {
 
 	/* Process common commands */
 
-	public void doTake() {
+	/**
+	 * If this Item is takeable, this method removes the item from the given container
+	 * (whether a room or other container) and adds the item to the player's inventory.
+	 */
+	public void doTake(Container container) {
 		if (isTakeable) {
 			getWorld().getPlayer().addItem(this);
-			getWorld().getPlayer().getCurrentRoom().removeItem(this);
+			container.removeItem(this);
 			World.print("Taken.\n\n");
 		}
 		else {

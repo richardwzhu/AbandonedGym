@@ -16,7 +16,7 @@ public class CommandTake extends Command {
 			String itemName = params[0];
 			if (world.getPlayer().getCurrentRoom().hasItem(itemName)) {
 				Item item = world.getPlayer().getCurrentRoom().getItem(itemName);
-				item.doTake();
+				item.doTake(world.getPlayer().getCurrentRoom());
 			}
 			else if (world.getPlayer().hasItem(itemName))
 				World.print("You already have that!\n\n");
