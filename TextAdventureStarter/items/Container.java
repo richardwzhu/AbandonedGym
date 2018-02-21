@@ -97,6 +97,14 @@ public class Container extends Item {
 	}
 
 	/**
+	 * Returns the number of Items in this container
+	 * @return number of Items in this container.
+	 */
+	public int numItems() {
+		return items.size();
+	}
+	
+	/**
 	 * Return a String describing the Container's non-scenery items
 	 * @return a String describing the Container's non-scenery items
 	 */
