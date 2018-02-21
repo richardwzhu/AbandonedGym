@@ -103,7 +103,15 @@ public class Container extends Item {
 	public int numItems() {
 		return items.size();
 	}
-	
+
+	/**
+	 * Returns a Collection of Items in this Container
+	 * @return Collection of Items in this Container
+	 */
+	public Collection<Item> getItems() {
+		return items.values();
+	}
+
 	/**
 	 * Return a String describing the Container's non-scenery items
 	 * @return a String describing the Container's non-scenery items
