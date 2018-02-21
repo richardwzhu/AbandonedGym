@@ -30,6 +30,7 @@ public class CommandGo extends Command {
 			else {
 				player.setCurrentRoom(nextRoom);
 				World.print("\n" + player.getCurrentRoom().getDescription());
+				player.getCurrentRoom().doGo();
 			}
 		}
 	}	

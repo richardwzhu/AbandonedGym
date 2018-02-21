@@ -25,7 +25,7 @@ public class CommandHelp extends Command {
 			for(Command command : getAllCommandHandlers()) {
 				World.print(Command.getHelpDescription(command) + "\n");
 			}
-			
+			World.print("\n");			
 		}
 	}
 
