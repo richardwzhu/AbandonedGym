@@ -105,11 +105,16 @@ public class Container extends Item {
 	}
 
 	/**
-	 * Returns a Collection of Items in this Container
-	 * @return Collection of Items in this Container
+	 * Returns an ArrayList of Items in this Container
+	 * @return ArrayList of Items in this Container
 	 */
-	public Collection<Item> getItems() {
-		return items.values();
+	public ArrayList<Item> getItems() {
+		ArrayList<Item> list = new ArrayList<Item>();
+		Iterator<Item> iter = items.values().iterator();
+		while (iter.hasNext()) {
+			list.add(iter.next());
+		}
+		return list;
 	}
 
 	/**
