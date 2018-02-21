@@ -86,7 +86,7 @@ public class Container extends Item {
 			}
 		}
 
-		String items = "a";
+		String items = "";
 
 		// Generates a String of non-scenery items in this room.
 		for (int i = 0; i < roomItems.size(); i++) {
@@ -97,7 +97,12 @@ public class Container extends Item {
 			else if (roomItems.size() > 1 && i > 0 && i < roomItems.size() - 1)
 				items += ",";
 			Item item = roomItems.get(i);
-			items += " " + item.getName();
+			if (i != 0)
+				items += " ";
+			if (item.getName().endsWith("s"))
+				items += item.getName();
+			else
+				items += "a " + item.getName();
 		}
 
 		if (items.equals("a"))
