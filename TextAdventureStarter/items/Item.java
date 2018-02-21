@@ -44,13 +44,6 @@ public abstract class Item {
 		return itemName;
 	}
 
-//	public void setName(String newName) {
-//		throw new RuntimeException("Error 312:  You have attempted to change the name of an Item that is probably " +
-//								   "being used as a key in a HashMap of Items.  This will break your game.  You can " +
-//								   "safely modify the description of an Item but not its name.  If you need to modify " +
-//								   "the Item's name then you should delete this Item and add a new one with the new name.");
-//	}
-
 	public int getWeight() {
 		return itemWeight;
 	}
@@ -100,5 +93,4 @@ public abstract class Item {
 
 	/** This method must be overridden by subclasses */
 	public abstract void doUse();
-
 }

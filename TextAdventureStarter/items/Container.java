@@ -10,25 +10,24 @@ import textadventure.World;
 
 public class Container extends Item {
 
-	// Add an attribute to keep track of the Items in this container.
-	// This could be an ArrayList, HashMap, or whatever you'd like.
+	/** Keeps track of the Items in this Container. */
 	HashMap<String, Item> items;
 
 	public Container(World world, String name, String description) {
 		super(world, name, 0, Item.NOT_TAKEABLE, description);
-		// Initialize this Container's list of items
 		items = new HashMap<String, Item>();
 	}
 
 	public Container(World world, String name, int weight, boolean takeable, String description) {
 		super(world, name, weight, takeable, description);
-		// Initialize your list of items here
 		items = new HashMap<String, Item>();
 	}
 
 	/**
 	 * Determines whether an item can be added to this Container.
 	 * By default, any item can be added.
+	 * @param item Item to be checked
+	 * @return Whether or not the given Item can be added to this Container
 	 */
 	public boolean canAddItem(Item item) {
 		return true;
@@ -36,6 +35,7 @@ public class Container extends Item {
 
 	/**
 	 * Adds an Item to this container's item list.
+	 * @param item Item to be added to this Container
 	 */
 	public void addItem(Item item) {
 		items.put(item.getName(), item);
@@ -44,33 +44,61 @@ public class Container extends Item {
 	/**
 	 * Determines whether an item can be removed from this container.
 	 * By default, any item can be removed.
+	 * @param item Item to be checked
+	 * @return Whether or not the given Item can be revmoved from this Container
 	 */
 	public boolean canRemoveItem(Item item) {
 		return true;
 	}	
 
+	/**
+	 * Removes an item from this container
+	 * @param itemName Name of the item to be removed from this Container
+	 * @return The Item removed or null if the Item was not found in this Container
+	 */
 	public Item removeItem(String itemName) {
 		return items.remove(itemName);
 	}
 
+	/**
+	 * Removes an item from this container
+	 * @param item Item to be removed from this Container
+	 * @return The Item removed or null if the Item was not found in this Container
+	 */
 	public Item removeItem(Item item) {
 		return items.remove(item.getName());
 	}
 
+	/**
+	 * Returns an Item from this container given its name String
+	 * @param itemName Name of the Item to get
+	 * @return Item whose name is given in the parameter
+	 */
 	public Item getItem(String itemName) {
 		return items.get(itemName);
 	}
 
+	/**
+	 * Determines whether this container has a given Item
+	 * @param item Item to be checked
+	 * @return Whether or not this Container contains the given Item
+	 */
 	public boolean hasItem(Item item) {
 		return items.containsKey(item.getName());
 	}
 
+	/**
+	 * Determines whether this container has a given Item
+	 * @param itemName String name of the Item to be checked.
+	 * @return Whether or not this Container contains the given Item
+	 */
 	public boolean hasItem(String itemName) {
 		return items.containsKey(itemName);
 	}
 
 	/**
-	 * Return a string describing the Container's non-scenery items
+	 * Return a String describing the Container's non-scenery items
+	 * @return a String describing the Container's non-scenery items
 	 */
 	public String getItemString() {
 		Collection<Item> mapValues = items.values();
@@ -99,18 +127,26 @@ public class Container extends Item {
 			Item item = roomItems.get(i);
 			if (i != 0)
 				items += " ";
+			// Plural nouns don't begin with "a"
 			if (item.getName().endsWith("s"))
 				items += item.getName();
+			// Singular nouns begin with "a"
 			else
 				items += "a " + item.getName();
 		}
 
-		if (items.equals("a"))
+		if (items.equals(""))
 			return "nothing";
 		else
 			return items;
 	}
 
+	/**
+	 * Moves a given Item from a source Container to this Container
+	 * @param item Item to be put into this Container
+	 * @param cource Container from which to get and remove the Item
+	 * @param Item which has been removed from source and put into this Container.
+	 */
 	public Item doPut(Item item, Container source) {
 		addItem(item);
 		source.removeItem(item);		
@@ -118,6 +154,11 @@ public class Container extends Item {
 		return item;
 	}
 
+	/**
+	 * Moves a given Item from this Container to the Player's inventory
+	 * @param item Item to be taken
+	 * @return Item which has been moved into the Player's inventory
+	 */
 	public Item doTake(Item item) {
 		getWorld().getPlayer().addItem(item);
 		this.removeItem(item);		

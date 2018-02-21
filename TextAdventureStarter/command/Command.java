@@ -122,7 +122,7 @@ public abstract class Command {
 	public abstract String[] getCommandWords();
 	
 	/**
-	 *  perform the command with the given parameters in the given world
+	 * Perform the command with the given parameters in the given world
 	 * @param cmd The command
 	 * @param params An array of parameters
 	 * @param world The world in which to perform the command
@@ -133,7 +133,7 @@ public abstract class Command {
 	/**
 	 * A description for the help menu. It should include a list of the expected parameters.
 	 * In the menu, this command will be printed in the form:
-	 * commandWord <this description> (<list of aliases>)
+	 * commandWord [this description] ([list of aliases])
 	 * Example: go [north, south, east, west] (move, travel, walk)
 	 * @return a description for this command to be used in the help menu.
 	 */
