@@ -3,6 +3,7 @@ package command;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,17 +12,14 @@ import java.util.Set;
 import textadventure.World;
 
 public abstract class Command {
+	private static final boolean DEBUG = false;
 	private static HashMap<String, Command> commandMap = initCommandMap();
 	
 	private static HashMap<String, Command> initCommandMap() {
 		HashMap<String, Command> map = new HashMap<>();
 		File dir = new File(".");
 		List<Class<?>> classes = null;
-		try {
-			classes = findClasses(dir, Arrays.asList("Command.class"));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		classes = findClasses(dir, Arrays.asList("Command.class"));
 		for (Class<?> cls : classes) {
 			if (Command.class.isAssignableFrom(cls)) {
 				try {
@@ -37,7 +35,13 @@ public abstract class Command {
 		return map;
 	}
 	
-	public static List<Class<?>> findClasses(File directory, List<String> ignoredFiles) throws ClassNotFoundException {
+	public static void debugMsg(String msg) {
+		if (DEBUG) {
+			System.out.println(msg);
+		}
+	}
+	
+	public static List<Class<?>> findClasses(File directory, List<String> ignoredFiles) {
 	    List<Class<?>> classes = new ArrayList<Class<?>>();
 	    if (!directory.exists()) {
 	        return classes;
@@ -48,16 +52,49 @@ public abstract class Command {
 	    		classes.addAll(findClasses(file, ignoredFiles));
 	    	} else if (file.getName().endsWith(".class")) {
 				if (ignoredFiles != null && !ignoredFiles.contains(file.getName())) {
-					String sep = File.separator;
-					if (sep.equals("\\")) sep += "\\";
-					String path = file.getPath();
-					String fullClassName = path.substring(2, path.length() - 6).replaceAll(sep, ".").replaceAll("/", ".");
-					if (fullClassName.startsWith("bin")) fullClassName = fullClassName.substring(4);
-					classes.add(Class.forName(fullClassName));
+					List<String> pathComponents = filePathComponents(file);
+					debugMsg("Starting Path Components = " + pathComponents);
+					if (pathComponents.size() > 0 && pathComponents.get(0).equals(".")) {
+						debugMsg("Removing starting . from path components");
+						pathComponents.remove(0);
+						debugMsg("Path Components now = " + pathComponents);
+					}
+					while (pathComponents.size() > 0) {
+						debugMsg("Current Path Components = " + pathComponents);
+						String fullClassName = "";
+						for (int i = 0; i < pathComponents.size() - 1; i++) {
+							fullClassName += pathComponents.get(i) + ".";
+						}
+						// last component will be the file name
+						fullClassName += file.getName().substring(0, file.getName().length() - 6);
+						Class<?> cls = null;
+						
+						try {
+							debugMsg("attempting to get instance of class: " + fullClassName);
+							cls = Class.forName(fullClassName);
+							classes.add(cls);
+							debugMsg("Successfully created instance of class " + fullClassName);
+							break;
+						} catch (ClassNotFoundException e) {
+							debugMsg("Class Not Found: " + fullClassName);
+							pathComponents.remove(0);
+						}
+					}
 				} 
 	    	}
 	    }
 	    return classes;
+	}
+	
+	public static List<String> filePathComponents(File f) {
+		List<String> components = new ArrayList<String>();
+	    do {
+	    	components.add(f.getName());
+	        f = f.getParentFile();
+	    } while (f.getParentFile() != null);
+	    components.add(f.getName());
+	    Collections.reverse(components);
+	    return components;
 	}
 	
 	public static boolean hasValidCommandWord(String cmdStr) {
