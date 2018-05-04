@@ -51,7 +51,7 @@ public abstract class Command {
 	    	if (file.isDirectory()) {
 	    		classes.addAll(findClasses(file, ignoredFiles));
 	    	} else if (file.getName().endsWith(".class")) {
-				if (ignoredFiles != null && !ignoredFiles.contains(file.getName())) {
+				if (ignoredFiles == null || !ignoredFiles.contains(file.getName())) {
 					List<String> pathComponents = filePathComponents(file);
 					debugMsg("Starting Path Components = " + pathComponents);
 					if (pathComponents.size() > 0 && pathComponents.get(0).equals(".")) {
