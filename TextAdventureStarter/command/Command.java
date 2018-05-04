@@ -163,7 +163,6 @@ public abstract class Command {
 	 * @param cmd The command
 	 * @param params An array of parameters
 	 * @param world The world in which to perform the command
-	 * @return true if the command was successful or false otherwise.
 	 */
 	public abstract void doCommand(String cmd, String[] params, World world);
 	
