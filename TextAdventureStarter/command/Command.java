@@ -1,6 +1,11 @@
 package command;
 
 import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +13,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 import textadventure.World;
 
@@ -17,36 +24,46 @@ public abstract class Command {
 	
 	private static HashMap<String, Command> initCommandMap() {
 		HashMap<String, Command> map = new HashMap<>();
-		File dir = new File(".");
 		List<Class<?>> classes = null;
-		classes = findClasses(dir, Arrays.asList("Command.class"));
+		String rootPath = "";
+		URL rootUrl = Command.class.getProtectionDomain().getCodeSource().getLocation();
+		try {
+			rootPath = new File(rootUrl.toURI()).getPath();
+			debugMsg("root path: " + rootPath);
+		} catch (URISyntaxException e1) {
+			if (DEBUG) e1.printStackTrace();
+		}
+		if (rootPath.endsWith(".jar")) {
+			classes = getClassesFromJar(rootUrl);
+		} else {
+			File rootDir = new File(".");
+			classes = findClasses(rootDir, null);
+			classes.addAll(getClassesFromJars(rootDir));
+		}
+		debugMsg(classes.toString());
 		for (Class<?> cls : classes) {
-			if (Command.class.isAssignableFrom(cls)) {
+			if (Command.class.isAssignableFrom(cls) && !Modifier.isAbstract(cls.getModifiers())) {
 				try {
-					Command cmd = (Command) cls.newInstance();
+					Command cmd = (Command)cls.newInstance();
 					for (String word : cmd.getCommandWords()) {
 						map.put(word, cmd);
 					}
 				} catch (InstantiationException | IllegalAccessException e) {
-					e.printStackTrace();
+					System.err.println("Failed to instantiate : " + cls.getName());
+					if (DEBUG) e.printStackTrace();
 				}
 			}
 		}
 		return map;
 	}
 	
-	public static void debugMsg(String msg) {
-		if (DEBUG) {
-			System.out.println(msg);
-		}
-	}
-	
-	public static List<Class<?>> findClasses(File directory, List<String> ignoredFiles) {
+	private static List<Class<?>> findClasses(File directory, List<String> ignoredFiles) {
 	    List<Class<?>> classes = new ArrayList<Class<?>>();
 	    if (!directory.exists()) {
 	        return classes;
 	    }
 	    File[] files = directory.listFiles();
+	    
 	    for (File file : files) {
 	    	if (file.isDirectory()) {
 	    		classes.addAll(findClasses(file, ignoredFiles));
@@ -86,7 +103,46 @@ public abstract class Command {
 	    return classes;
 	}
 	
-	public static List<String> filePathComponents(File f) {
+	public static List<Class<?>> getClassesFromJar(URL url) {
+		List<Class<?>> list = new ArrayList<>();
+		try (JarInputStream jar = new JarInputStream(url.openStream());) {
+			while (true) {
+				JarEntry entry = jar.getNextJarEntry();
+				if (entry == null) {
+					break;
+				} else if (entry.getName().endsWith(".class")) {
+					String fName = entry.getName();
+					try {
+						Class<?> cls = Class.forName(entry.getName().substring(0, fName.length() - 6).replaceAll("/", "."));
+						list.add(cls);
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} catch (IOException er) {
+			er.printStackTrace();
+		}
+		return list;
+	}
+	
+	public static List<Class<?>> getClassesFromJars(File root){
+		List<Class<?>> list = new ArrayList<>();
+		for (File f : root.listFiles()) {
+			if (f.getName().endsWith(".jar")) {
+				URL url;
+				try {
+					url = f.toURI().toURL();
+					list.addAll(getClassesFromJar(url));
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+	
+	private static List<String> filePathComponents(File f) {
 		List<String> components = new ArrayList<String>();
 	    do {
 	    	components.add(f.getName());
@@ -95,6 +151,12 @@ public abstract class Command {
 	    components.add(f.getName());
 	    Collections.reverse(components);
 	    return components;
+	}
+	
+	public static void debugMsg(String msg) {
+		if (DEBUG) {
+			System.out.println(msg);
+		}
 	}
 	
 	public static boolean hasValidCommandWord(String cmdStr) {
