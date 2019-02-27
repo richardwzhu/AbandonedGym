@@ -197,8 +197,9 @@ public abstract class Command {
 	}
 	
 	public static String getCommandWord(String cmdStr) {
-		if (cmdStr == null || cmdStr.length() == 0) return null;
-		return cmdStr.split("\\s+")[0];
+		if (cmdStr == null || cmdStr.trim().length() == 0) return null;
+		String[] words = cmdStr.split("\\s+");
+		return words.length > 0 ? cmdStr.split("\\s+")[0] : null;
 	}
 	
 	public static String getHelpDescription(Command cmd) {
