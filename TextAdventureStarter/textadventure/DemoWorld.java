@@ -66,6 +66,7 @@ public class DemoWorld extends World {
 		print("(c) 2018 By Mr. Ferrante\n");
 		print("Type 'help' if you need help.\n\n");
 		print(getPlayer().getCurrentRoom().getDescription());
+		updateTime();
 	}
 
 	@Override
