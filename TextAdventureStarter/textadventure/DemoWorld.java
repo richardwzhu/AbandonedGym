@@ -54,9 +54,6 @@ public class DemoWorld extends World {
 		startMilliseconds = System.currentTimeMillis();
 	}
 
-	/**
-	 * Print out the opening message for the player.
-	 */
 	@Override
 	public void printWelcome() {
 		print("You are lying in bed drifting in and out of consciousness as the early light of dawn "
