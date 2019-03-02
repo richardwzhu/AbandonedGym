@@ -13,17 +13,17 @@ public class CommandLook extends Command {
 	public void doCommand(String cmd, String[] params, World world) {
 		
 		// "look" command
-		if (params.length == 0)
+		if (params.length == 0) {
 			World.print("\n" + world.getPlayer().getCurrentRoom().getDescription());
 
 		// "look at [Item]" command
-		else if (params.length == 2 && params[0].equals("at")) {
+		} else if (params.length == 2 && params[0].equals("at")) {
 			Command.doCommand("examine " + params[1], world);
-		}
-
+			
 		// error
-		else
+		} else {
 			World.print("I don't understand.\n\n");
+		}
 	}	
 
 	@Override

@@ -17,11 +17,11 @@ public class CommandTake extends Command {
 			if (world.getPlayer().getCurrentRoom().hasItem(itemName)) {
 				Item item = world.getPlayer().getCurrentRoom().getItem(itemName);
 				item.doTake(world.getPlayer().getCurrentRoom());
-			}
-			else if (world.getPlayer().hasItem(itemName))
+			} else if (world.getPlayer().hasItem(itemName)) {
 				World.print("You already have that!\n\n");
-			else
+			} else {
 				World.print("You can't see any " + itemName + " here.\n\n");
+			}
 		}
 		else {
 			World.print("I don't understand.\n\n");

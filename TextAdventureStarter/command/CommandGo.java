@@ -22,22 +22,22 @@ public class CommandGo extends Command {
 
 			// Try to leave current room.
 			Room nextRoom = player.getCurrentRoom().nextRoom(direction);
-
-			if (nextRoom == null)
+			if (nextRoom == null) {
 				World.print("You can't go that way!\n\n");
-			else if (nextRoom.isLocked())
+			} else if (nextRoom.isLocked()) {
 				World.print("Sorry.  It's locked.\n\n");
-			else {
+			} else {
+				player.getCurrentRoom().doLeave();
 				player.setCurrentRoom(nextRoom);
 				World.print("\n" + player.getCurrentRoom().getDescription());
-				player.getCurrentRoom().doGo();
+				player.getCurrentRoom().doEnter();
 			}
 		}
 	}	
 	
 	@Override
 	public String getHelpDescription() {
-		return "[north, east, west, south]";
+		return "[direction]";
 	}
 
 }

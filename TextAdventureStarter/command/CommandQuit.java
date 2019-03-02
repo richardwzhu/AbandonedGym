@@ -20,7 +20,7 @@ public class CommandQuit extends Command {
 
 	@Override
 	public String getHelpDescription() {
-		return "quits the game";
+		return "";
 	}
 
 }

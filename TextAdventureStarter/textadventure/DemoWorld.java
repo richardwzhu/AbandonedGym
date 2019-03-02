@@ -1,7 +1,6 @@
 package textadventure;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 
 import items.Clothes;
 import items.Container;
@@ -26,6 +25,49 @@ public class DemoWorld extends World {
 	private Calendar localTime;
 	long startMilliseconds;
 	
+	public void createPlayer() {
+		setPlayer(new Player(getRoom(BEDROOM), this, "Player", "You are looking good today!"));
+		getPlayer().addItem(new Clothes(this, "clothes", 15, Item.TAKEABLE, "Your school clothes for the day."));
+	}
+
+	public void createRooms() {
+		// Create rooms and add them to our HashMap
+		addRoom(new Room(BEDROOM, "Your bedroom is simple yet functional.\n\n", this));
+		addRoom(new Room(HALLWAY, "A short hallway leading to the kitched is covered in family photos.  There is a bathroom to the west.\n\n", this));
+		addRoom(new Room(BATHROOM, "You are inside a simple bathroom with light blue walls.\n\n", Room.LOCKED, this));
+		addRoom(new Room(KITCHEN, "The kitchen is void of people.  You'd better eat and run.  There is an exit leading outside to the east.\n\n", this));
+		addRoom(new Room(OUTSIDE, "You step outside into the brisk morning air.\n\n", Room.LOCKED, this));
+
+		// Define multiple room exits at once.  Order is north, east, south, west
+		getRoom(HALLWAY).setExits(getRoom(KITCHEN), null, getRoom(BEDROOM), getRoom(BATHROOM));
+		getRoom(KITCHEN).setExits(null, getRoom(OUTSIDE), getRoom(HALLWAY), null);
+		getRoom(BATHROOM).setExits(null, getRoom(HALLWAY), null, null);
+		
+		// Define exits individually. This method could also be used to set exits
+		// other than north, south, east, west
+		getRoom(BEDROOM).setExit("north", getRoom(HALLWAY));
+		getRoom(OUTSIDE).setExit("west", getRoom(KITCHEN));
+		getRoom(BATHROOM).setExit("east", getRoom(HALLWAY));
+
+		// Create game items and add them to rooms
+		Container cubby = new Container(this, "cubby_hole", 15, Item.NOT_TAKEABLE, "This is where you store important small items.");
+		UselessItem rock = new UselessItem(this, "rock", 10, Item.TAKEABLE, "It's just your pet rock with googly eyes and a silly smile.");
+		UselessItem keys = new UselessItem(this, "keys", 2, Item.TAKEABLE, "It's a set of keys");
+		getRoom(BEDROOM).addItem(cubby);
+		cubby.addItem(rock);
+		cubby.addItem(keys);
+
+		getRoom(HALLWAY).addItem(new UselessItem(this, "picture", 15, Item.TAKEABLE, "The picture features you, age five, crying in front of an animatronic Santa Clause."));
+		getRoom(KITCHEN).addItem(new UselessItem(this, "stove", 100, Item.NOT_TAKEABLE, "An unremarkable gas stove stares back at you."));
+
+		Container fridge = new Container(this, "refrigerator", 100, Item.NOT_TAKEABLE, "A standard white refrigerator hums quietly.");
+		getRoom(KITCHEN).addItem(fridge);
+		getRoom(KITCHEN).addItem(new Scenery(this, "table", 150, "An empty kitchen table."));
+		getRoom(KITCHEN).addItem(new Container(this, "toaster", 5, Item.TAKEABLE, "A black, smudgy toaster."));
+
+		getRoom(BATHROOM).addItem(new UselessItem(this, "toothbrush", 5, Item.TAKEABLE, "Your trusty toothbrush."));
+	}
+	
 	/**
 	 * Updates and prints out the current game time. Every second spent between game
 	 * commands becomes a second spent within the game.
@@ -47,13 +89,15 @@ public class DemoWorld extends World {
 	}
 
 	@Override
-	public void initializeNewGame() {
-		super.initializeNewGame();
+	public void initializeGame() {
+		createRooms();
+		createPlayer();
+		
 		// Start game timer 
 		localTime = new GregorianCalendar(2018, Calendar.AUGUST, 14, 7, 15, 0); // August 14, 2018 7:15 A.M.
 		startMilliseconds = System.currentTimeMillis();
 	}
-
+	
 	@Override
 	public void printWelcome() {
 		print("You are lying in bed drifting in and out of consciousness as the early light of dawn "
@@ -67,54 +111,8 @@ public class DemoWorld extends World {
 	}
 
 	@Override
-	public boolean isGameOver() {
-		return updateTime();
-	}
-
-	@Override
-	public Player createPlayer() {
-		Player player = new Player(getRoom(BEDROOM), this, "Player", "You are looking good today!");
-		player.addItem(new Clothes(this, "clothes", 15, Item.TAKEABLE, "Your school clothes for the day."));
-		return player;
-	}
-
-	@Override
-	public HashMap<String, Room> createRooms() {
-		// Create a new HashMap to store the rooms in
-		HashMap<String, Room> rooms = new HashMap<>();
-
-		// Create rooms and add them to our HashMap
-		rooms.put(BEDROOM, new Room(BEDROOM, "Your bedroom is simple yet functional.\n\n", this));
-		rooms.put(HALLWAY, new Room(HALLWAY, "A short hallway leading to the kitched is covered in family photos.  There is a bathroom to the west.\n\n", this));
-		rooms.put(BATHROOM, new Room(BATHROOM, "You are inside a simple bathroom with light blue walls.\n\n", Room.LOCKED, this));
-		rooms.put(KITCHEN, new Room(KITCHEN, "The kitchen is void of people.  You'd better eat and run.  There is an exit leading outside to the east.\n\n", this));
-		rooms.put(OUTSIDE, new Room(OUTSIDE, "You step outside into the brisk morning air.\n\n", Room.LOCKED, this));
-
-		// Define room exits.  Order is north, east, south, west
-		rooms.get(BEDROOM).setExits(rooms.get(HALLWAY), null, null, null);
-		rooms.get(HALLWAY).setExits(rooms.get(KITCHEN), null, rooms.get(BEDROOM), rooms.get(BATHROOM));
-		rooms.get(KITCHEN).setExits(null, rooms.get(OUTSIDE), rooms.get(HALLWAY), null);
-		rooms.get(OUTSIDE).setExits(null, null, null, rooms.get(KITCHEN));
-		rooms.get(BATHROOM).setExits(null, rooms.get(HALLWAY), null, null);
-
-		// Create game items and add them to rooms
-		Container cubby = new Container(this, "cubby_hole", 15, Item.NOT_TAKEABLE, "This is where you store important small items.");
-		UselessItem rock = new UselessItem(this, "rock", 10, Item.TAKEABLE, "It's just your pet rock with googly eyes and a silly smile.");
-		UselessItem keys = new UselessItem(this, "keys", 2, Item.TAKEABLE, "It's a set of keys");
-		rooms.get(BEDROOM).addItem(cubby);
-		cubby.addItem(rock);
-		cubby.addItem(keys);
-
-		rooms.get(HALLWAY).addItem(new UselessItem(this, "picture", 15, Item.TAKEABLE, "The picture features you, age five, crying in front of an animatronic Santa Clause."));
-		rooms.get(KITCHEN).addItem(new UselessItem(this, "stove", 100, Item.NOT_TAKEABLE, "An unremarkable gas stove stares back at you."));
-
-		Container fridge = new Container(this, "refrigerator", 100, Item.NOT_TAKEABLE, "A standard white refrigerator hums quietly.");
-		rooms.get(KITCHEN).addItem(fridge);
-		rooms.get(KITCHEN).addItem(new Scenery(this, "table", 150, "An empty kitchen table."));
-		rooms.get(KITCHEN).addItem(new Container(this, "toaster", 5, Item.TAKEABLE, "A black, smudgy toaster."));
-
-		rooms.get(BATHROOM).addItem(new UselessItem(this, "toothbrush", 5, Item.TAKEABLE, "Your trusty toothbrush."));
-		return rooms;
+	public void onCommandFinished() {
+		if (updateTime()) setGameOver(true);
 	}
 
 }

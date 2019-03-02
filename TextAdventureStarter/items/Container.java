@@ -45,7 +45,7 @@ public class Container extends Item {
 	 * Determines whether an item can be removed from this container.
 	 * By default, any item can be removed.
 	 * @param item Item to be checked
-	 * @return Whether or not the given Item can be revmoved from this Container
+	 * @return Whether or not the given Item can be removed from this Container
 	 */
 	public boolean canRemoveItem(Item item) {
 		return true;

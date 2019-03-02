@@ -17,12 +17,12 @@ public class CommandDrop extends Command {
 			if (world.getPlayer().hasItem(secondWord)) {
 				Item item = world.getPlayer().getItem(secondWord);
 				item.doDrop();
-			}
-			else
+			} else {
 				World.print("You don't have a " + secondWord + ".\n\n");
-		}
-		else
+			}
+		} else {
 			World.print("What do you want to drop?\n\n");
+		}
 	}
 	
 	@Override
