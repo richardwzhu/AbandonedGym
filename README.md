@@ -13,17 +13,17 @@ When you have created your account, return to this page to fork this repository 
 
 Fork this repository by clicking on the + icon as shown below
 
-![](http://www.mrferrante.com/apcs/images/fork_step_1.png)
+![](http://www.mrferrante.com/apcs/images/text_adv_fork_step_1.png)
 
 Select Fork this repository as shown below
 
-![](http://www.mrferrante.com/apcs/images/fork_step_2.png)
+![](http://www.mrferrante.com/apcs/images/text_adv_fork_step_2.png)
 
 Name your repository according to the format PX_LastName_FirstName_TextAdventure
 
 Make sure you check the box making it a private repository
 
-![](http://www.mrferrante.com/apcs/images/fork_step_3.png)
+![](http://www.mrferrante.com/apcs/images/text_adv_fork_step_3.png)
 
 ### Lab Directions ###
 
