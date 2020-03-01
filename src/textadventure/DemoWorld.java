@@ -1,11 +1,27 @@
+/* Richard Zhu, P1, 2/25/20
+ * This lab took me about 3 hours to complete.
+ * The process of writing this lab was long and somewhat straightforward.
+ * This lab was more complex than most of the past labs because the use
+ * of more unfamiliar concepts and multilayered aspect. I found that the 
+ * lab doc was comprehensive and explained everything thoroughly. Though 
+ * this lab took a long time, I feel as though I am more comfortable and
+ * understanding of sub/super classes and interfaces. Overall, this lab
+ * was decently enjoyable and a good learning experience/preparation for
+ * my own text adventure.
+ */
+
 package textadventure;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import items.CloseableContainer;
 import items.Clothes;
 import items.Container;
+import items.Food;
 import items.Item;
+import items.Keys;
 import items.Scenery;
+import items.Toothbrush;
 import items.UselessItem;
 
 public class DemoWorld extends World {
@@ -20,6 +36,7 @@ public class DemoWorld extends World {
 	public static final String BATHROOM = "BATHROOM";
 	public static final String KITCHEN = "KITCHEN";
 	public static final String OUTSIDE = "OUTSIDE";
+	public static final String GRANDMAS_ROOM = "GRANDMAS ROOM";
 
 	/** Keeps track of time using built-in Java object */
 	private Calendar localTime;
@@ -37,9 +54,10 @@ public class DemoWorld extends World {
 		addRoom(new Room(BATHROOM, "You are inside a simple bathroom with light blue walls.\n\n", Room.LOCKED, this));
 		addRoom(new Room(KITCHEN, "The kitchen is void of people.  You'd better eat and run.  There is an exit leading outside to the east.\n\n", this));
 		addRoom(new Room(OUTSIDE, "You step outside into the brisk morning air.\n\n", Room.LOCKED, this));
+		addRoom(new Room(GRANDMAS_ROOM, "Your grandmas room is small and cozy. You catch a whiff of tea.\n\n", this));
 
 		// Define multiple room exits at once.  Order is north, east, south, west
-		getRoom(HALLWAY).setExits(getRoom(KITCHEN), null, getRoom(BEDROOM), getRoom(BATHROOM));
+		getRoom(HALLWAY).setExits(getRoom(KITCHEN), getRoom(GRANDMAS_ROOM), getRoom(BEDROOM), getRoom(BATHROOM));
 		getRoom(KITCHEN).setExits(null, getRoom(OUTSIDE), getRoom(HALLWAY), null);
 		getRoom(BATHROOM).setExits(null, getRoom(HALLWAY), null, null);
 		
@@ -48,11 +66,12 @@ public class DemoWorld extends World {
 		getRoom(BEDROOM).setExit("north", getRoom(HALLWAY));
 		getRoom(OUTSIDE).setExit("west", getRoom(KITCHEN));
 		getRoom(BATHROOM).setExit("east", getRoom(HALLWAY));
+		getRoom(GRANDMAS_ROOM).setExit("west", getRoom(HALLWAY));
 
 		// Create game items and add them to rooms
 		Container cubby = new Container(this, "cubby_hole", 15, Item.NOT_TAKEABLE, "This is where you store important small items.");
 		UselessItem rock = new UselessItem(this, "rock", 10, Item.TAKEABLE, "It's just your pet rock with googly eyes and a silly smile.");
-		UselessItem keys = new UselessItem(this, "keys", 2, Item.TAKEABLE, "It's a set of keys");
+		Keys keys = new Keys(this, "keys", 2, Item.TAKEABLE, "It's a set of keys");
 		getRoom(BEDROOM).addItem(cubby);
 		cubby.addItem(rock);
 		cubby.addItem(keys);
@@ -60,12 +79,16 @@ public class DemoWorld extends World {
 		getRoom(HALLWAY).addItem(new UselessItem(this, "picture", 15, Item.TAKEABLE, "The picture features you, age five, crying in front of an animatronic Santa Clause."));
 		getRoom(KITCHEN).addItem(new UselessItem(this, "stove", 100, Item.NOT_TAKEABLE, "An unremarkable gas stove stares back at you."));
 
-		Container fridge = new Container(this, "refrigerator", 100, Item.NOT_TAKEABLE, "A standard white refrigerator hums quietly.");
+		CloseableContainer fridge = new CloseableContainer(this, "refrigerator", "A standard white refrigerator hums quietly.", false);
+		fridge.addItem(new Food(this, "bread", 1, "a piece of white bread"));
 		getRoom(KITCHEN).addItem(fridge);
 		getRoom(KITCHEN).addItem(new Scenery(this, "table", 150, "An empty kitchen table."));
 		getRoom(KITCHEN).addItem(new Container(this, "toaster", 5, Item.TAKEABLE, "A black, smudgy toaster."));
 
-		getRoom(BATHROOM).addItem(new UselessItem(this, "toothbrush", 5, Item.TAKEABLE, "Your trusty toothbrush."));
+		getRoom(BATHROOM).addItem(new Toothbrush(this, "toothbrush", 5, Item.TAKEABLE, "Your trusty toothbrush."));
+		
+		getRoom(GRANDMAS_ROOM).addItem(new UselessItem(this, "teapot", 5, Item.TAKEABLE, "Grandma's trusty teapot."));
+		getRoom(GRANDMAS_ROOM).addItem(new UselessItem(this, "bed", 100, Item.NOT_TAKEABLE, "Grandma's cushioned bed aloft a wooden frame."));
 	}
 	
 	/**

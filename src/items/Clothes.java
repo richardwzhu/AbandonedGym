@@ -12,6 +12,7 @@ public class Clothes extends Item {
 	public void doUse() {
 		World.print("You put on your " + getName() + " for the day.\n\n");
 		getWorld().getPlayer().removeItem(this);
+		getWorld().getPlayer().clothe(true);
 	}
 
 }

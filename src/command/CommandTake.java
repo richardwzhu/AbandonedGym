@@ -1,5 +1,6 @@
 package command;
 
+import items.Container;
 import items.Item;
 import textadventure.World;
 
@@ -22,15 +23,38 @@ public class CommandTake extends Command {
 			} else {
 				World.print("You can't see any " + itemName + " here.\n\n");
 			}
-		}
-		else {
+		}else if (params.length == 3) {
+			if(!params[1].equals("from")){
+				World.print("I dont understand.\n\n");
+				return;
+			}
+			Item container = null;
+			if(world.getPlayer().hasItem(params[2])) {
+				container = world.getPlayer().getItem(params[2]);
+			}else {
+				container = world.getPlayer().getCurrentRoom().getItem(params[2]);
+			}
+			if(container == null) {
+				World.print("You can't see any " + params[2] + " here.\n\n");
+				return;
+			}
+			if(!(container instanceof Container)) {
+				World.print("The " + params[2] + " can't hold things!\n\n");
+				return;
+			}
+			if(!((Container)container).hasItem(params[0])) {
+				World.print("The " + params[2] + " doesn't have a " + params[0] + ".\n\n");
+				return;
+			}
+			((Container)container).doTake(((Container)container).getItem(params[0]));
+		} else {
 			World.print("I don't understand.\n\n");
 		}
 	}
 
 	@Override
 	public String getHelpDescription() {
-		return "[item]";
+		return "[item] or [item] from [container]";
 	}
 
 }
